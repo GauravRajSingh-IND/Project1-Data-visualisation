@@ -1,0 +1,58 @@
+# Setup packages and load them
+import numpy as np
+import pandas as pd
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+# %matplotlib inline
+import seaborn as sns
+import warnings
+warnings.filterwarnings(action = 'once')
+from matplotlib import patches
+from scipy.spatial import ConvexHull
+
+# Defult values for plot and text styling
+large =22 ; med = 16; small = 12
+params = {
+    'axes.titlesize' : large,
+    'legend.fontsize' : med,
+    'figure.figsize' : (16,10),
+    'axes.labelsize' : med,
+    'axes.titlesize': med,
+    'xtick.labelsize': med,
+    'ytick.labelsize': med,
+    'figure.titlesize': large
+}
+
+
+plt.rcParams.update(params)
+plt.style.use('seaborn-whitegrid')
+sns.set_style("white")
+
+# Scatter plot
+midwest = pd.read_csv("C:/Users/grsma/Desktop/Covid 19/Kaggle Data/Project 1/midwest_filter.csv")
+
+# Checking data
+print(midwest.columns)
+print(midwest.shape)
+print(midwest.head(10))
+print(midwest['area'].unique())
+
+# Scatter plot of widwest area vs population
+# create as many as colors as category in midwest data
+categories = np.unique(midwest['category'])
+colors = [plt.cm.tab10(i/float(len(categories)-1)) for i in range(len(categories))]
+# Adding backgorund details of the plot
+plt.figure(figsize= (16,10), dpi= 80, facecolor= 'w', edgecolor= 'w')
+for i, category in enumerate(categories):
+    plt.scatter('area', 'poptotal',
+                data=midwest.loc[midwest.category == category, :],
+                s=20,c=colors[i],label=str(category))
+
+plt.gca().set(xlim=(0.0, 0.1), ylim=(0, 90000),
+              xlabel='Area', ylabel='Population')
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+plt.title("Scatterplot of Midwest Area vs Population", fontsize=22)
+plt.legend(fontsize=12)
+plt.show()
+
