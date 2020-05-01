@@ -56,3 +56,38 @@ plt.title("Scatterplot of Midwest Area vs Population", fontsize=22)
 plt.legend(fontsize=12)
 plt.show()
 
+# Visual 2 : Bubble Plot
+
+# create as many as colors as category in midwest data
+categories = np.unique(midwest['category'])
+colors = [plt.cm.tab10(i/float(len(categories)-1)) for i in range(len(categories))]
+# Adding backgorund details of the plot
+plt.figure(figsize= (16,10), dpi= 80, facecolor= 'w', edgecolor= 'k')
+for i, category in enumerate(categories):
+    plt.scatter('area', 'poptotal',
+                data=midwest.loc[midwest.category == category, :],
+                s='dot_size',c=colors[i],label=str(category), edgecolors= 'black', linewidths= 0.5)
+
+# Making a function for encircling
+def encircle(x,y,ax = None, **kwargs):
+    if not ax: ax = plt.gca()
+    p = np.c_[x,y]
+    hull = ConvexHull(p)
+    poly = plt.Polygon(p[hull.vertices,:], **kwargs)
+    ax.add_patch(poly)
+
+# Select data to be encircled
+midwest_encircle_data = midwest.loc[midwest.state == 'IN', :]
+
+# Draw polygon surrounding vector
+encircle(midwest_encircle_data.area, midwest_encircle_data.poptotal, ec="k", fc="gold", alpha=0.1)
+encircle(midwest_encircle_data.area, midwest_encircle_data.poptotal, ec="firebrick", fc="none", linewidth=1.5)
+
+# Step 4: Decorations
+plt.gca().set(xlim=(0.0, 0.1), ylim=(0, 90000),
+              xlabel='Area', ylabel='Population')
+
+plt.xticks(fontsize=12); plt.yticks(fontsize=12)
+plt.title("Bubble Plot with Encircling", fontsize=22)
+plt.legend(fontsize=12)
+plt.show()
