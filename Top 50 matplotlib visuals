@@ -91,3 +91,82 @@ plt.xticks(fontsize=12); plt.yticks(fontsize=12)
 plt.title("Bubble Plot with Encircling", fontsize=22)
 plt.legend(fontsize=12)
 plt.show()
+
+
+
+labels = ['G1', 'G2', 'G3', 'G4', 'G5']
+men_means = [20, 35, 30, 35, 27]
+women_means = [25, 32, 34, 20, 25]
+men_std = [2, 3, 4, 1, 2]
+women_std = [3, 5, 2, 3, 3]
+width = 0.35
+
+plt.bar(labels, men_means, width, label = 'Men', yerr = men_std)
+plt.bar(labels, women_means, width, label = 'Women', bottom= men_means, yerr = women_std)
+plt.title("Stack Bar Chart to sow men  and women means")
+plt.xlabel('Labels')
+plt.ylabel('Mean Count')
+plt.legend()
+plt.show()
+
+
+
+
+x = np.arange(len(labels))
+
+# Group Bar Chart with labels
+
+labels = ['G1', 'G2', 'G3', 'G4', 'G5']
+men_means = [20, 34, 30, 35, 27]
+women_means = [25, 32, 34, 20, 25]
+
+x = np.arange(len(labels))  # the label locations
+width = 0.35  # the width of the bars
+
+fig, ax = plt.subplots()
+rects1 = ax.bar(x - width/2, men_means, width, label='Men')
+rects2 = ax.bar(x + width/2, women_means, width, label='Women')
+
+# Add some text for labels, title and custom x-axis tick labels, etc.
+ax.set_ylabel('Scores')
+ax.set_title('Scores by group and gender')
+ax.set_xticks(x)
+ax.set_xticklabels(labels)
+ax.legend()
+
+
+def autolabel(rects):
+    """Attach a text label above each bar in *rects*, displaying its height."""
+    for rect in rects:
+        height = rect.get_height()
+        ax.annotate('{}'.format(height),
+                    xy=(rect.get_x() + rect.get_width() / 2, height),
+                    xytext=(0, 3),  # 3 points vertical offset
+                    textcoords="offset points",
+                    ha='center', va='bottom')
+
+
+autolabel(rects1)
+autolabel(rects2)
+
+fig.tight_layout()
+
+plt.show()
+
+# Horizontal Bar chart
+plt.rcdefaults()
+
+fig, ax = plt.subplots()
+people = ('Tom', 'Dick', 'Harry', 'Slim', 'Jim')
+y_pos = np.arange(len(people))
+performance = 3 + 10 * np.random.rand(len(people))
+error = np.random.rand(len(people))
+
+ax.barh(y_pos, performance, xerr = error, align= 'center')
+ax.set_yticks(y_pos)
+ax.set_yticklabels(people)
+ax.set_title("how fast people are performing")
+plt.show()
+
+
+
